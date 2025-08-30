@@ -3,6 +3,9 @@
 #include "lcd_display.h"
 #include "static_emotions/static_emotions.h"
 
+// 定义宏来控制是否显示文本
+#define ENABLE_TEXT_DISPLAY 0  // 设置为0关闭文本显示，1开启文本显示
+
 /**
  * @brief 静态图片表情显示类
  * 继承SpiLcdDisplay，添加静态图片表情支持

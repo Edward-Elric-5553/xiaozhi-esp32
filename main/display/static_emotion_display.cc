@@ -71,6 +71,7 @@ void StaticEmotionDisplay::SetupImageContainer() {
     lv_obj_center(emotion_image_);
     lv_img_set_src(emotion_image_, &neutral_360);  // 默认中性表情
 
+#if ENABLE_TEXT_DISPLAY
     // 创建聊天消息标签
     chat_message_label_ = lv_label_create(content_);
     lv_label_set_text(chat_message_label_, "");
@@ -83,6 +84,9 @@ void StaticEmotionDisplay::SetupImageContainer() {
     lv_obj_set_style_bg_color(chat_message_label_, lv_color_black(), 0);
     lv_obj_set_style_pad_ver(chat_message_label_, 5, 0);
     lv_obj_align(chat_message_label_, LV_ALIGN_BOTTOM_MID, 0, 0);
+#else
+    chat_message_label_ = nullptr;
+#endif
 
     LcdDisplay::SetTheme("dark");
 }
@@ -107,6 +111,7 @@ void StaticEmotionDisplay::SetEmotion(const char* emotion) {
 }
 
 void StaticEmotionDisplay::SetChatMessage(const char* role, const char* content) {
+#if ENABLE_TEXT_DISPLAY
     if (!chat_message_label_) {
         return;
     }
@@ -120,6 +125,10 @@ void StaticEmotionDisplay::SetChatMessage(const char* role, const char* content)
     } else {
         lv_obj_add_flag(chat_message_label_, LV_OBJ_FLAG_HIDDEN);
     }
+#else
+    // 文本显示被禁用，直接返回
+    ESP_LOGD(TAG, "文本显示已禁用，忽略聊天消息设置");
+#endif
 }
 
 void StaticEmotionDisplay::SetIcon(const char* icon) {
