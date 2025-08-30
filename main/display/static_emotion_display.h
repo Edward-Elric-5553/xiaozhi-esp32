@@ -1,23 +1,22 @@
 #pragma once
 
-#include "display/lcd_display.h"
-
-#include "static_emotions.h"
+#include "lcd_display.h"
+#include "static_emotions/static_emotions.h"
 
 /**
- * @brief Electron Bot GIF表情显示类
- * 继承LcdDisplay，添加GIF表情支持
+ * @brief 静态图片表情显示类
+ * 继承SpiLcdDisplay，添加静态图片表情支持
  */
-class ElectronEmojiDisplay : public SpiLcdDisplay {
+class StaticEmotionDisplay : public SpiLcdDisplay {
 public:
     /**
      * @brief 构造函数，参数与SpiLcdDisplay相同
      */
-    ElectronEmojiDisplay(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_handle_t panel,
+    StaticEmotionDisplay(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_handle_t panel,
                          int width, int height, int offset_x, int offset_y, bool mirror_x,
                          bool mirror_y, bool swap_xy, DisplayFonts fonts);
 
-    virtual ~ElectronEmojiDisplay() = default;
+    virtual ~StaticEmotionDisplay() = default;
 
     // 重写表情设置方法
     virtual void SetEmotion(const char* emotion) override;
@@ -29,9 +28,9 @@ public:
     virtual void SetIcon(const char* icon) override;
 
 private:
-    void SetupGifContainer();
+    void SetupImageContainer();
 
-    lv_obj_t* emotion_gif_;  ///< GIF表情组件
+    lv_obj_t* emotion_image_;  ///< 静态图片表情组件
 
     // 表情映射
     struct EmotionMap {

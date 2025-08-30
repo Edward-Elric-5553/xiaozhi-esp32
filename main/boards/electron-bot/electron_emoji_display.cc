@@ -10,40 +10,40 @@
 
 #define TAG "ElectronEmojiDisplay"
 
-// 表情映射表 - 将多种表情映射到现有6个GIF
+// 表情映射表 - 将多种表情映射到静态图片资源
 const ElectronEmojiDisplay::EmotionMap ElectronEmojiDisplay::emotion_maps_[] = {
-    // 中性/平静类表情 -> staticstate
-    {"neutral", &staticstate},
-    {"relaxed", &staticstate},
-    {"sleepy", &staticstate},
+    // 中性/平静类表情 -> neutral_360
+    {"neutral", &neutral_360},
+    {"relaxed", &neutral_360},
+    {"sleepy", &neutral_360},
 
-    // 积极/开心类表情 -> happy
-    {"happy", &happy},
-    {"laughing", &happy},
-    {"funny", &happy},
-    {"loving", &happy},
-    {"confident", &happy},
-    {"winking", &happy},
-    {"cool", &happy},
-    {"delicious", &happy},
-    {"kissy", &happy},
-    {"silly", &happy},
+    // 积极/开心类表情 -> happy_360
+    {"happy", &happy_360},
+    {"laughing", &happy_360},
+    {"funny", &happy_360},
+    {"loving", &happy_360},
+    {"confident", &happy_360},
+    {"winking", &happy_360},
+    {"cool", &happy_360},
+    {"delicious", &happy_360},
+    {"kissy", &happy_360},
+    {"silly", &happy_360},
 
-    // 悲伤类表情 -> sad
-    {"sad", &sad},
-    {"crying", &sad},
+    // 悲伤类表情 -> sad_360
+    {"sad", &sad_360},
+    {"crying", &sad_360},
 
-    // 愤怒类表情 -> anger
-    {"angry", &anger},
+    // 愤怒类表情 -> angry_360
+    {"angry", &angry_360},
 
-    // 惊讶类表情 -> scare
-    {"surprised", &scare},
-    {"shocked", &scare},
+    // 惊讶类表情 -> surprised_360
+    {"surprised", &surprised_360},
+    {"shocked", &surprised_360},
 
-    // 思考/困惑类表情 -> buxue
-    {"thinking", &buxue},
-    {"confused", &buxue},
-    {"embarrassed", &buxue},
+    // 思考/困惑类表情 -> thinking_360
+    {"thinking", &thinking_360},
+    {"confused", &thinking_360},
+    {"embarrassed", &thinking_360},
 
     {nullptr, nullptr}  // 结束标记
 };
@@ -85,13 +85,13 @@ void ElectronEmojiDisplay::SetupGifContainer() {
     lv_obj_set_style_border_width(emotion_label_, 0, 0);
     lv_obj_add_flag(emotion_label_, LV_OBJ_FLAG_HIDDEN);
 
-    emotion_gif_ = lv_gif_create(content_);
+    emotion_gif_ = lv_img_create(content_);
     int gif_size = LV_HOR_RES;
     lv_obj_set_size(emotion_gif_, gif_size, gif_size);
     lv_obj_set_style_border_width(emotion_gif_, 0, 0);
     lv_obj_set_style_bg_opa(emotion_gif_, LV_OPA_TRANSP, 0);
     lv_obj_center(emotion_gif_);
-    lv_gif_set_src(emotion_gif_, &staticstate);
+    lv_img_set_src(emotion_gif_, &neutral_360);
 
     chat_message_label_ = lv_label_create(content_);
     lv_label_set_text(chat_message_label_, "");
@@ -119,13 +119,13 @@ void ElectronEmojiDisplay::SetEmotion(const char* emotion) {
 
     for (const auto& map : emotion_maps_) {
         if (map.name && strcmp(map.name, emotion) == 0) {
-            lv_gif_set_src(emotion_gif_, map.gif);
+            lv_img_set_src(emotion_gif_, map.image);
             ESP_LOGI(TAG, "设置表情: %s", emotion);
             return;
         }
     }
 
-    lv_gif_set_src(emotion_gif_, &staticstate);
+    lv_img_set_src(emotion_gif_, &neutral_360);
     ESP_LOGI(TAG, "未知表情'%s'，使用默认", emotion);
 }
 
